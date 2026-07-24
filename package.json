@@ -1,0 +1,17 @@
+{
+  "name": "genitura",
+  "version": "1.0.0",
+  "description": "Genitura — estúdio de mapas natais à moda tradicional (sete planetas, dignidades, aspectos ptolomaicos, estrelas fixas e antiscia).",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/main.jsx --bundle --minify --jsx=automatic --loader:.jsx=jsx --define:process.env.NODE_ENV='\"production\"' --outfile=assets/genitura.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
