@@ -2,878 +2,220 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OFFICINA ASTROLOGICA — Ambiente de Trabalho</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1a0f08">
+<meta name="description" content="Officina Astrologica — genitura de Lucas · Pouso Alegre, 17/08/1994. Mandala natal, planetas nas casas segundo Olavo de Carvalho, estrelas fixas, aspectos e antiscia.">
+<title>Officina Astrologica — Genitura</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23FF5C00'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%231a0f08'/%3E%3C/svg%3E">
 <style>
-:root{ --bg:#000; --fg:#e8e8e8; --dim:#8f8f8f; --faint:#4a4a4a; --line:#ffffff; }
-*{box-sizing:border-box}
+/* ============================================================
+   OFFICINA ASTROLOGICA — claymorphism · laranja neon (#FF5C00)
+   mobile-first · glifos reais · sem emojis · sem planetas modernos
+   ============================================================ */
+:root{
+  --orange:#FF5C00;   --orange-soft:#FF8A3D;  --orange-lite:#FFB37A;  --peach:#FFD9BF;
+  --fire:#FF6B1A;     --earth:#D6934E;        --air:#F2B279;          --water:#B06B41;
+  --bg0:#140b06;      --bg1:#231409;          --bg2:#2d1a0d;
+  --clay:#2b190d;     --clay-hi:#3a2413;      --clay-lo:#1c0f07;
+  --ink:#F6E9DD;      --ink-dim:#CBA98E;      --ink-faint:#9c7a60;
+  --line:#4a2e18;
+  --shadow-dark:rgba(0,0,0,.55);
+  --shadow-lite:rgba(255,140,60,.10);
+  --r:26px; --r-sm:16px;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
 body{
-  background:var(--bg); color:var(--fg);
-  font-family:"Courier New", ui-monospace, "Cascadia Mono", Consolas, monospace;
-  font-size:14px; line-height:1.5;
-  -webkit-font-smoothing:none;
+  font-family:var(--sans); color:var(--ink); font-size:15px; line-height:1.6;
+  background:radial-gradient(120% 80% at 50% -10%, #3a2010 0%, var(--bg1) 42%, var(--bg0) 100%) fixed;
+  min-height:100vh;
 }
-body::after{ /* scanlines */
-  content:""; position:fixed; inset:0; pointer-events:none; z-index:999;
-  background:repeating-linear-gradient(0deg, rgba(255,255,255,.028) 0 1px, transparent 1px 3px);
-}
-.wrap{max-width:1120px;margin:0 auto;padding:18px 16px 90px}
-.dither{color:var(--faint); font-size:11px; letter-spacing:2px; overflow:hidden; white-space:nowrap; user-select:none}
-header.masthead{text-align:center; margin:10px 0 26px}
-header.masthead h1{
-  margin:8px 0 2px; font-size:26px; font-weight:700;
-  letter-spacing:.45em; text-transform:uppercase; text-indent:.45em;
-}
-header.masthead .sub{color:var(--dim); letter-spacing:.3em; text-transform:uppercase; font-size:11px}
-.panel{border:1px solid var(--line); background:#050505; padding:16px; margin:22px 0; position:relative}
-.panel::before{
-  content:attr(data-t); position:absolute; top:-10px; left:12px; background:var(--bg);
-  padding:0 10px; letter-spacing:.3em; text-transform:uppercase; font-size:12px; font-weight:bold;
-}
-.panel::after{
-  content:"▓▒░"; position:absolute; top:-10px; right:12px; background:var(--bg);
-  padding:0 8px; color:var(--faint); font-size:12px;
-}
-label{display:block; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--dim); margin:0 0 4px}
-input,select,textarea{
-  width:100%; background:#000; color:var(--fg); border:1px solid #555;
-  font:inherit; padding:7px 9px; border-radius:0; outline:none;
-}
-input:focus,select:focus,textarea:focus{border-color:#fff; background:#0a0a0a}
-select{appearance:none; background-image:linear-gradient(45deg,transparent 45%,#fff 45%,#fff 55%,transparent 55%),linear-gradient(135deg,transparent 45%,#fff 45%,#fff 55%,transparent 55%); background-position:calc(100% - 16px) 55%,calc(100% - 10px) 55%; background-size:6px 6px; background-repeat:no-repeat; padding-right:28px}
-.formgrid{display:grid; grid-template-columns:repeat(6,1fr); gap:12px; margin-top:12px}
-.formgrid .c2{grid-column:span 2} .formgrid .c3{grid-column:span 3} .formgrid .c6{grid-column:span 6}
-.btnrow{display:flex; gap:12px; flex-wrap:wrap; margin-top:14px}
-.btn{
-  background:#fff; color:#000; border:1px solid #fff; padding:9px 18px;
-  font:inherit; font-weight:bold; letter-spacing:.2em; text-transform:uppercase; cursor:pointer;
-  box-shadow:4px 4px 0 #333;
-}
-.btn:hover{background:#000; color:#fff}
-.btn:active{transform:translate(2px,2px); box-shadow:2px 2px 0 #333}
-.btn.ghost{background:#000; color:#fff; border:1px dashed #888; box-shadow:none}
-.btn.ghost:hover{border-color:#fff}
-.hint{color:var(--dim); font-size:12px; margin-top:8px}
-.err{color:#fff; background:#1a1a1a; border-left:4px solid #fff; padding:8px 10px; margin-top:10px; display:none}
-.grid2{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:20px}
-@media(max-width:880px){ .grid2{grid-template-columns:1fr} .formgrid{grid-template-columns:repeat(2,1fr)} .formgrid .c3,.formgrid .c6{grid-column:span 2} }
-table{width:100%; border-collapse:collapse; font-size:13px; margin-top:6px}
-th,td{border:1px solid #333; padding:5px 8px; text-align:left; vertical-align:top}
-th{background:#101010; letter-spacing:.15em; text-transform:uppercase; font-size:11px; color:#ccc}
-tr:nth-child(even) td{background:#070707}
-td.g{font-size:15px}
-.rx{color:#000; background:#fff; padding:0 4px; font-weight:bold; font-size:11px}
-canvas#wheel{image-rendering:pixelated; width:100%; max-width:720px; display:block; margin:0 auto; background:#000}
-.cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:16px; margin-top:8px}
-.card{border:1px dashed #777; background:#030303; padding:14px; position:relative}
-.card:hover{border-color:#bbb}
-.card h3{margin:0 0 2px; font-size:14px; letter-spacing:.18em; text-transform:uppercase; border-bottom:1px solid #3a3a3a; padding-bottom:6px}
-.card .tag{font-size:11px; color:var(--dim); letter-spacing:.1em; margin:6px 0 8px}
-.card .txt{min-height:70px; color:#ddd; outline:none; white-space:pre-wrap}
-.card .txt:focus{background:#0a0a0a}
-.card .del{position:absolute; top:6px; right:8px; color:#666; cursor:pointer; font-weight:bold}
-.card .del:hover{color:#fff}
-.editnote{color:var(--dim); font-size:12px; margin:4px 0 12px}
-.statusline{position:fixed; left:0; right:0; bottom:0; background:#000; border-top:1px solid #333; color:var(--dim); font-size:11px; letter-spacing:.15em; padding:5px 14px; z-index:1000; text-transform:uppercase}
-#toast{position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:#fff; color:#000; padding:8px 18px; font-weight:bold; letter-spacing:.15em; display:none; z-index:1001; box-shadow:6px 6px 0 #222}
-.hidden{display:none !important}
-h2.secl{font-size:13px; letter-spacing:.3em; text-transform:uppercase; color:#bbb; border-bottom:1px dashed #444; padding-bottom:5px; margin:18px 0 8px}
-.kv{display:grid; grid-template-columns:auto 1fr; gap:2px 14px; font-size:13px}
-.kv b{color:var(--dim); font-weight:normal; letter-spacing:.1em; text-transform:uppercase; font-size:11px; padding-top:2px}
+.gl{font-family:"Apple Symbols","Segoe UI Symbol","Noto Sans Symbols2",var(--serif);font-weight:400}
 
-/* ============ IMPRESSÃO / PDF ABNT ============ */
-#printReport{display:none}
+.app{max-width:480px;margin:0 auto;
+     padding:calc(14px + env(safe-area-inset-top)) 16px calc(40px + env(safe-area-inset-bottom))}
+
+/* ---------- cabeçalho ---------- */
+.masthead{text-align:center;padding:16px 8px 8px}
+.masthead .mark{
+  width:64px;height:64px;margin:0 auto 12px;border-radius:50%;
+  display:grid;place-items:center;font-size:30px;color:#fff;
+  background:radial-gradient(circle at 34% 30%, var(--orange-lite), var(--orange) 55%, #c23e00);
+  box-shadow:6px 8px 20px var(--shadow-dark), -4px -5px 14px var(--shadow-lite),
+             inset 3px 3px 6px rgba(255,200,160,.5), inset -5px -6px 12px rgba(120,40,0,.55);
+}
+.masthead h1{font-family:var(--serif);font-weight:600;font-size:23px;letter-spacing:.12em;
+             margin:0;text-transform:uppercase;color:var(--ink)}
+.masthead .who{font-family:var(--serif);font-style:italic;color:var(--orange-lite);font-size:16px;margin:3px 0 2px}
+.masthead .born{color:var(--ink-dim);font-size:12px;letter-spacing:.06em}
+
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0 4px}
+.pill{font-size:11px;letter-spacing:.05em;color:var(--ink-dim);background:var(--clay);
+      border-radius:999px;padding:6px 12px;
+      box-shadow:inset 2px 2px 5px var(--clay-lo), inset -2px -2px 5px var(--clay-hi)}
+.pill b{color:var(--orange-lite);font-weight:600}
+.pill .gl{color:var(--orange-lite);font-size:13px}
+
+/* ---------- abas ---------- */
+.tabs{position:sticky;top:0;z-index:30;display:flex;gap:6px;padding:12px 0 10px;margin:8px 0 4px;
+      background:linear-gradient(180deg, var(--bg1) 62%, rgba(35,20,9,0))}
+.tab{flex:1;text-align:center;font-family:var(--sans);font-size:12.5px;font-weight:600;
+     letter-spacing:.04em;color:var(--ink-dim);border:none;cursor:pointer;padding:12px 4px;
+     border-radius:var(--r-sm);background:var(--clay);
+     box-shadow:5px 5px 12px var(--shadow-dark), -4px -4px 10px var(--shadow-lite),
+                inset 1px 1px 2px rgba(255,180,130,.10);
+     transition:transform .12s ease, color .12s ease}
+.tab .gl{display:block;font-size:17px;margin-bottom:3px;color:var(--ink-faint)}
+.tab[aria-selected="true"]{color:#fff;
+     background:linear-gradient(145deg, var(--orange-soft), var(--orange) 70%, #d24800);
+     box-shadow:5px 6px 14px rgba(120,40,0,.5), -3px -3px 10px var(--shadow-lite),
+                inset 2px 2px 4px rgba(255,210,180,.45), inset -3px -4px 8px rgba(150,50,0,.5)}
+.tab[aria-selected="true"] .gl{color:#fff}
+.tab:active{transform:translateY(1px)}
+
+.subtabs{display:flex;gap:6px;margin:6px 0 16px;flex-wrap:wrap}
+.subtab{flex:1 1 auto;min-width:92px;text-align:center;font-size:11.5px;font-weight:600;
+        letter-spacing:.03em;color:var(--ink-dim);border:none;cursor:pointer;padding:9px 8px;
+        border-radius:12px;background:var(--clay);
+        box-shadow:inset 2px 2px 5px var(--clay-lo), inset -2px -2px 5px var(--clay-hi);
+        transition:color .12s ease}
+.subtab[aria-selected="true"]{color:#fff;background:linear-gradient(145deg,#7a3200,#a34200);
+        box-shadow:inset 2px 2px 6px rgba(60,20,0,.6), inset -2px -2px 6px rgba(200,90,20,.35)}
+
+/* ---------- clay card ---------- */
+.card{background:linear-gradient(145deg, var(--clay-hi), var(--clay) 55%, var(--clay-lo));
+      border-radius:var(--r);padding:20px 18px;margin:0 0 18px;
+      box-shadow:9px 10px 24px var(--shadow-dark), -6px -6px 16px var(--shadow-lite),
+                 inset 2px 2px 4px rgba(255,180,130,.10), inset -5px -6px 12px rgba(0,0,0,.34)}
+.card.tight{padding:16px 16px}
+.card-h{display:flex;align-items:center;gap:12px;margin:0 0 10px}
+.card-h .badge{flex:none;width:46px;height:46px;border-radius:15px;display:grid;place-items:center;
+      font-size:24px;color:#fff;
+      background:radial-gradient(circle at 35% 30%, var(--orange-lite), var(--orange) 58%, #bd3c00);
+      box-shadow:4px 5px 12px var(--shadow-dark), inset 2px 2px 4px rgba(255,210,175,.5),
+                 inset -3px -4px 8px rgba(130,45,0,.5)}
+.card-h .t{flex:1;min-width:0}
+.card-h .t h3{margin:0;font-family:var(--serif);font-size:18px;font-weight:600;letter-spacing:.01em;line-height:1.2}
+.card-h .t .sub{color:var(--orange-lite);font-size:12.5px;font-style:italic;font-family:var(--serif);margin-top:2px}
+.pos{display:inline-block;font-size:12px;color:var(--ink-dim);letter-spacing:.03em;
+     background:var(--clay-lo);border-radius:999px;padding:4px 11px;margin:0 0 12px;
+     box-shadow:inset 1px 1px 3px #000, inset -1px -1px 2px var(--clay-hi)}
+.pos .gl{color:var(--orange-lite)}
+.card p{margin:0 0 11px}
+.card p:last-child{margin-bottom:0}
+.lead{color:var(--ink-dim);font-size:13.5px;font-style:italic;font-family:var(--serif);
+      border-left:3px solid var(--orange);padding-left:12px;margin:0 0 14px}
+.chave{margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--clay-lo);
+       box-shadow:inset 2px 2px 5px #000, inset -2px -2px 5px var(--clay-hi);font-size:13.5px}
+.chave b{display:block;color:var(--orange-lite);font-size:10.5px;letter-spacing:.18em;
+         text-transform:uppercase;margin-bottom:5px;font-weight:700}
+.weave{margin-top:12px;font-size:13px;color:var(--peach)}
+.weave .lab{color:var(--orange-lite);font-weight:600}
+.src{margin-top:12px;font-size:10.5px;color:var(--ink-faint);letter-spacing:.05em;text-transform:uppercase}
+
+/* ---------- mandala ---------- */
+.mandala-wrap{padding:6px 2px 2px}
+svg.mandala{width:100%;height:auto;display:block;overflow:visible}
+.mandala text{font-family:"Apple Symbols","Segoe UI Symbol","Noto Sans Symbols2",var(--serif)}
+.legend{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--ink-dim)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
+
+.chips{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:4px}
+.chip{display:flex;align-items:center;gap:9px;background:var(--clay);border-radius:14px;padding:9px 11px;
+      box-shadow:inset 2px 2px 5px var(--clay-lo), inset -2px -2px 5px var(--clay-hi)}
+.chip .g{font-size:19px;color:var(--orange-lite);width:22px;text-align:center}
+.chip .n{font-size:11px;color:var(--ink-dim);line-height:1.25}
+.chip .n b{display:block;color:var(--ink);font-size:12.5px;font-weight:600}
+.chip .h{margin-left:auto;font-size:10px;color:var(--ink-faint);text-align:right;white-space:nowrap}
+
+.sect-title{font-family:var(--serif);font-size:15px;color:var(--orange-lite);letter-spacing:.05em;
+            margin:2px 0 10px;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line)}
+th{color:var(--ink-faint);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+td .gl{color:var(--orange-lite);font-size:15px}
+tr:last-child td{border-bottom:none}
+.rx{color:var(--orange);font-weight:700;font-size:11px}
+
+.asp-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.asp-row:last-child{border-bottom:none}
+.asp-glyphs{font-size:16px;color:var(--ink);white-space:nowrap;letter-spacing:2px}
+.asp-glyphs .op{color:var(--orange)}
+.asp-body{flex:1;min-width:0}
+.asp-body .nm{display:block;font-size:13.5px;font-weight:600}
+.asp-body .ds{display:block;font-size:11.5px;color:var(--ink-dim);margin-top:1px}
+.asp-orb{font-size:11px;color:var(--ink-faint);text-align:right;white-space:nowrap}
+.asp-orb .ap{color:var(--orange-lite);font-weight:700}
+
+.btn{display:block;width:100%;font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.08em;
+     text-transform:uppercase;color:#fff;border:none;cursor:pointer;padding:15px;border-radius:var(--r-sm);
+     background:linear-gradient(145deg, var(--orange-soft), var(--orange) 70%, #cf4600);
+     box-shadow:6px 7px 16px rgba(120,40,0,.5), -4px -4px 10px var(--shadow-lite),
+                inset 2px 2px 4px rgba(255,210,180,.4), inset -3px -4px 8px rgba(150,50,0,.5)}
+.btn:active{transform:translateY(1px)}
+
+.foot{text-align:center;color:var(--ink-faint);font-size:11px;font-style:italic;
+      font-family:var(--serif);padding:20px 10px 8px}
+.hidden{display:none!important}
+
 @media print{
-  body{background:#fff !important; color:#000 !important; font-family:"Times New Roman", Times, serif; font-size:12pt; line-height:1.5}
-  body::after{display:none}
-  .screen-ui{display:none !important}
-  .statusline,#toast{display:none !important}
-  #printReport{display:block !important; color:#000}
-  @page{margin:3cm 2cm 2cm 3cm}
-  #printReport h1{font-size:12pt; text-align:center; text-transform:uppercase; font-weight:bold; letter-spacing:normal; margin:0 0 6pt}
-  #printReport .capa{text-align:center; margin-bottom:24pt}
-  #printReport .capa .inst{text-transform:uppercase; font-weight:bold}
-  #printReport h2{font-size:12pt; text-transform:uppercase; font-weight:bold; margin:18pt 0 6pt; text-align:left}
-  #printReport h3{font-size:12pt; font-weight:bold; margin:12pt 0 4pt}
-  #printReport p{ text-align:justify; text-indent:1.25cm; margin:0 0 6pt}
-  #printReport p.noind{text-indent:0}
-  #printReport table{width:100%; border-collapse:collapse; font-size:10pt; margin:6pt 0 12pt}
-  #printReport th,#printReport td{border:1px solid #000; padding:3pt 5pt; background:#fff !important; color:#000}
-  #printReport th{font-weight:bold; text-transform:none; letter-spacing:normal}
-  #printReport .fonte{font-size:10pt; text-indent:0; margin-top:-8pt}
-  #printReport .pbreak{page-break-before:always}
+  body{background:#fff;color:#000}
+  .tabs,.subtabs,.btn,.foot,.masthead .mark{display:none!important}
+  .view{display:block!important}
+  .card{box-shadow:none;border:1px solid #ccc;background:#fff;color:#000;border-radius:8px;page-break-inside:avoid}
+  .card-h .badge,.pill{box-shadow:none}
 }
 </style>
 </head>
 <body>
-<div class="wrap screen-ui">
-  <div class="dither" aria-hidden="true">░░▒▒▓▓██▓▓▒▒░░░▒▒▓▓██▓▓▒▒░░░▒▒▓▓██▓▓▒▒░░░▒▒▓▓██▓▓▒▒░░░▒▒▓▓██▓▓▒▒░░░▒▒▓▓██▓▓▒▒░░░▒▒▓▓██▓▓▒▒░░░▒▒▓▓██▓▓▒▒░░</div>
+<div class="app">
+
   <header class="masthead">
+    <div class="mark gl">&#9737;&#65038;</div>
     <h1>Officina Astrologica</h1>
-    <div class="sub">ambiente de trabalho · astrologia tradicional · v1.0</div>
+    <div class="who">Genitura de Lucas</div>
+    <div class="born">Pouso Alegre, Minas Gerais &middot; 17 de agosto de 1994 &middot; 06h00</div>
+    <div class="pills" id="pills"></div>
   </header>
 
-  <!-- IMPORTAÇÃO -->
-  <section class="panel" data-t="Importação de Mapa">
-    <label for="urlin">Colar link (aspectarian.com ou similar com parâmetros date / lat / long / t)</label>
-    <input id="urlin" type="text" spellcheck="false"
-      placeholder="https://www.aspectarian.com/chart?date=2002-04-22T09:40&lat=-22.227&long=-45.939&name=me&n=Pouso+Alegre&t=America/Sao_Paulo">
-    <div class="btnrow">
-      <button class="btn" id="btnParse">Absorver Link</button>
-      <button class="btn ghost" id="btnCalc">Calcular Mapa</button>
-    </div>
-    <div class="formgrid">
-      <div class="c2"><label>Nome</label><input id="f_nome" type="text" value=""></div>
-      <div class="c2"><label>Local</label><input id="f_local" type="text" value=""></div>
-      <div class="c2"><label>Fuso (IANA)</label><input id="f_tz" type="text" value="America/Sao_Paulo" spellcheck="false"></div>
-      <div><label>Data</label><input id="f_data" type="date" value=""></div>
-      <div><label>Hora local</label><input id="f_hora" type="time" value=""></div>
-      <div><label>Latitude</label><input id="f_lat" type="text" value=""></div>
-      <div><label>Longitude</label><input id="f_lon" type="text" value=""></div>
-      <div><label>Offset UTC</label><input id="f_off" type="text" placeholder="-03:00"></div>
-      <div><label>Casas</label>
-        <select id="f_casas">
-          <option value="whole">Signos Inteiros</option>
-          <option value="placidus">Placidus</option>
-        </select>
+  <nav class="tabs" role="tablist" id="tabs"></nav>
+
+  <section class="view" id="view-mandala">
+    <div class="card">
+      <div class="mandala-wrap" id="mandala"></div>
+      <div class="legend">
+        <span><i style="background:var(--orange)"></i>aspecto duro</span>
+        <span><i style="background:var(--air)"></i>aspecto brando</span>
+        <span><span class="gl" style="color:var(--orange-lite)">&#9737;&#65038;</span> ponto</span>
+        <span><span style="color:var(--ink-faint)">&#9733;</span> estrela fixa</span>
       </div>
     </div>
-    <div class="err" id="errbox"></div>
-    <div class="hint">O link é absorvido por inteiro: data, hora, coordenadas e fuso horário. O mapa completo — planetas, casas, aspectos, dignidades, seita e estrelas fixas — é recalculado localmente por efeméride embutida (precisão típica de minutos de arco). O offset UTC é resolvido automaticamente pelo fuso histórico, mas pode ser corrigido à mão.</div>
+    <div class="card tight">
+      <div class="sect-title">Pontos da genitura</div>
+      <div class="chips" id="chips"></div>
+    </div>
   </section>
 
-  <!-- RESULTADO -->
-  <div id="resultado" class="hidden">
-    <section class="panel" data-t="Roda do Mapa">
-      <div class="kv" id="chartMeta" style="margin-bottom:12px"></div>
-      <canvas id="wheel" width="760" height="760"></canvas>
-    </section>
+  <section class="view hidden" id="view-natal">
+    <nav class="subtabs" role="tablist" id="subtabs"></nav>
+    <div id="sub-casas"></div>
+    <div id="sub-estrelas" class="hidden"></div>
+    <div id="sub-aspectos" class="hidden"></div>
+  </section>
 
-    <div class="grid2">
-      <section class="panel" data-t="Posições Planetárias">
-        <table id="tblPos"></table>
-      </section>
-      <section class="panel" data-t="Cúspides das Casas">
-        <table id="tblCusp"></table>
-        <h2 class="secl">Seita &amp; Sortes</h2>
-        <table id="tblSect"></table>
-      </section>
-    </div>
+  <section class="view hidden" id="view-dados">
+    <div class="card tight"><div class="sect-title">Posi&ccedil;&otilde;es planet&aacute;rias</div><table id="tblPos"></table></div>
+    <div class="card tight"><div class="sect-title">C&uacute;spides das casas</div><table id="tblCusp"></table></div>
+    <div class="card tight"><div class="sect-title">Seita &amp; sortes</div><table id="tblSect"></table></div>
+    <button class="btn" id="btnPrint">Exportar / Imprimir a genitura</button>
+  </section>
 
-    <div class="grid2">
-      <section class="panel" data-t="Aspectos">
-        <table id="tblAsp"></table>
-      </section>
-      <section class="panel" data-t="Estrelas Fixas — Conjunções">
-        <table id="tblStars"></table>
-        <div class="hint">Orbe padrão 1°30′ (2° para as estrelas régias e maiores). Longitudes precessadas para a época do nascimento.</div>
-      </section>
-    </div>
-
-    <section class="panel" data-t="Cards de Interpretação">
-      <div class="editnote">░ Interpretação básica gerada por doutrina tradicional (dignidades essenciais, seita, regências, tópicos das casas). Clique em qualquer card e edite o texto livremente — suas edições entram na exportação. ░</div>
-      <div class="cards" id="cards"></div>
-      <div class="btnrow"><button class="btn ghost" id="btnAddCard">+ Novo Card</button></div>
-    </section>
-
-    <section class="panel" data-t="Exportação">
-      <div class="btnrow">
-        <button class="btn" id="btnPdf">Exportar PDF · ABNT</button>
-        <button class="btn" id="btnHtml">Exportar HTML responsivo</button>
-      </div>
-      <div class="hint">PDF: abre o diálogo de impressão já formatado em normas ABNT (Times 12, entrelinha 1,5, margens 3-2-2-3 cm, parágrafos justificados com recuo de 1,25 cm) — escolha "Salvar como PDF". HTML: baixa um arquivo autônomo, responsivo e de leitura fácil, na mesma estética.</div>
-    </section>
-  </div>
+  <div class="foot">Nada al&eacute;m dos sete: Sol, Lua, Merc&uacute;rio, V&ecirc;nus, Marte, J&uacute;piter e Saturno.</div>
 </div>
 
-<div id="printReport"></div>
-<div id="toast"></div>
-<div class="statusline screen-ui" id="statusline">░▒▓ pronto · aguardando mapa ▓▒░</div>
-
-<script>
-/* ================================================================
-   MOTOR ASTRONÔMICO — efeméride embutida
-   Sol: Meeus cap.25 · Lua: série truncada ELP (Meeus cap.47)
-   Planetas: elementos keplerianos médios (Standish, 1800–2050)
-   Casas: Signos Inteiros e Placidus · Estrelas fixas: catálogo J2000 + precessão
-================================================================ */
-"use strict";
-const D2R=Math.PI/180, R2D=180/Math.PI;
-const norm=x=>((x%360)+360)%360;
-const fold180=x=>{x=norm(x); return x>180? x-360 : x;};
-const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
-
-const SIGNOS=["Áries","Touro","Gêmeos","Câncer","Leão","Virgem","Libra","Escorpião","Sagitário","Capricórnio","Aquário","Peixes"];
-const SGL=["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒","♓"];
-const PGL={"Sol":"☉","Lua":"☽","Mercúrio":"☿","Vênus":"♀","Marte":"♂","Júpiter":"♃","Saturno":"♄","Urano":"♅","Netuno":"♆","Plutão":"♇","Nodo Norte":"☊","Nodo Sul":"☋","Parte da Fortuna":"⊗","ASC":"AC","MC":"MC"};
-
-function julianDay(y,m,d,utHours){
-  if(m<=2){y-=1;m+=12;}
-  const A=Math.floor(y/100), B=2-A+Math.floor(A/4);
-  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+utHours/24+B-1524.5;
-}
-function obliquity(T){ return 23.43929111 - 0.0130041667*T - 1.6389e-7*T*T + 5.036e-7*T*T*T; }
-
-function sunLongitude(T){
-  const L0=norm(280.46646+36000.76983*T+0.0003032*T*T);
-  const M=norm(357.52911+35999.05029*T-0.0001537*T*T);
-  const Mr=M*D2R;
-  const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(Mr)
-        +(0.019993-0.000101*T)*Math.sin(2*Mr)
-        +0.000289*Math.sin(3*Mr);
-  const Om=(125.04-1934.136*T)*D2R;
-  return norm(L0+C-0.00569-0.00478*Math.sin(Om)); // longitude aparente
-}
-function moonLongitude(T){
-  const Lp=norm(218.3164477+481267.88123421*T-0.0015786*T*T+T*T*T/538841);
-  const D =norm(297.8501921+445267.1114034*T-0.0018819*T*T)*D2R;
-  const M =norm(357.5291092+35999.0502909*T-0.0001536*T*T)*D2R;
-  const Mp=norm(134.9633964+477198.8675055*T+0.0087414*T*T)*D2R;
-  const F =norm(93.2720950+483202.0175233*T-0.0036539*T*T)*D2R;
-  const E=1-0.002516*T-0.0000074*T*T;
-  const terms=[ // [coef(1e-6 deg), d, m, mp, f]
-    [6288774,0,0,1,0],[1274027,2,0,-1,0],[658314,2,0,0,0],[213618,0,0,2,0],
-    [-185116,0,1,0,0],[-114332,0,0,0,2],[58793,2,0,-2,0],[57066,2,-1,-1,0],
-    [53322,2,0,1,0],[45758,2,-1,0,0],[-40923,0,1,-1,0],[-34720,1,0,0,0],
-    [-30383,0,1,1,0],[15327,2,0,0,-2],[-12528,0,0,1,2],[10980,0,0,1,-2],
-    [10675,4,0,-1,0],[10034,0,0,3,0],[8548,4,0,-2,0],[-7888,2,1,-1,0],
-    [-6766,2,1,0,0],[-5163,1,0,-1,0],[4987,1,1,0,0],[4036,2,-1,1,0]
-  ];
-  let s=0;
-  for(const [c,d,m,mp,f] of terms){
-    let coef=c; const am=Math.abs(m);
-    if(am===1)coef*=E; else if(am===2)coef*=E*E;
-    s+=coef*Math.sin(d*D+m*M+mp*Mp+f*F);
-  }
-  const Om=(125.04452-1934.136261*T)*D2R;
-  const nut=-0.00478*Math.sin(Om);
-  return norm(Lp+s*1e-6+nut);
-}
-// Elementos médios (Standish JPL, válidos 1800–2050): [a,e,I,L,varpi,Omega] + taxas/século
-const ELEM={
- "Mercúrio":[[0.38709927,0.20563593,7.00497902,252.25032350,77.45779628,48.33076593],[0.00000037,0.00001906,-0.00594749,149472.67411175,0.16047689,-0.12534081]],
- "Vênus":[[0.72333566,0.00677672,3.39467605,181.97909950,131.60246718,76.67984255],[0.00000390,-0.00004107,-0.00078890,58517.81538729,0.00268329,-0.27769418]],
- "Terra":[[1.00000261,0.01671123,-0.00001531,100.46457166,102.93768193,0.0],[0.00000562,-0.00004392,-0.01294668,35999.37244981,0.32327364,0.0]],
- "Marte":[[1.52371034,0.09339410,1.84969142,-4.55343205,-23.94362959,49.55953891],[0.00001847,0.00007882,-0.00813131,19140.30268499,0.44441088,-0.29257343]],
- "Júpiter":[[5.20288700,0.04838624,1.30439695,34.39644051,14.72847983,100.47390909],[-0.00011607,-0.00013253,-0.00183714,3034.74612775,0.21252668,0.20469106]],
- "Saturno":[[9.53667594,0.05386179,2.48599187,49.95424423,92.59887831,113.66242448],[-0.00125060,-0.00050991,0.00193609,1222.49362201,-0.41897216,-0.28867794]],
- "Urano":[[19.18916464,0.04725744,0.77263783,313.23810451,170.95427630,74.01692503],[-0.00196176,-0.00004397,-0.00242939,428.48202785,0.40805281,0.04240589]],
- "Netuno":[[30.06992276,0.00859048,1.77004347,-55.12002969,44.96476227,131.78422574],[0.00026291,0.00005105,0.00035372,218.45945325,-0.32241464,-0.00508664]],
- "Plutão":[[39.48211675,0.24882730,17.14001206,238.92903833,224.06891629,110.30393684],[-0.00031596,0.00005170,0.00004818,145.20780515,-0.04062942,-0.01183482]]
-};
-function kepler(Mdeg,e){
-  let M=norm(Mdeg)*D2R, E=M+e*Math.sin(M);
-  for(let i=0;i<12;i++){ E=E-(E-e*Math.sin(E)-M)/(1-e*Math.cos(E)); }
-  return E;
-}
-function helioXYZ(nome,T){
-  const [e0,r0]=ELEM[nome];
-  const a=e0[0]+r0[0]*T, e=e0[1]+r0[1]*T, I=(e0[2]+r0[2]*T)*D2R,
-        L=e0[3]+r0[3]*T, vp=e0[4]+r0[4]*T, Om=(e0[5]+r0[5]*T)*D2R;
-  const M=L-vp, w=(vp*D2R)-Om;
-  const E=kepler(M,e);
-  const xp=a*(Math.cos(E)-e), yp=a*Math.sqrt(1-e*e)*Math.sin(E);
-  const cw=Math.cos(w),sw=Math.sin(w),cO=Math.cos(Om),sO=Math.sin(Om),cI=Math.cos(I),sI=Math.sin(I);
-  return [
-    (cw*cO-sw*sO*cI)*xp+(-sw*cO-cw*sO*cI)*yp,
-    (cw*sO+sw*cO*cI)*xp+(-sw*sO+cw*cO*cI)*yp,
-    (sw*sI)*xp+(cw*sI)*yp
-  ];
-}
-function ephemeris(jd){
-  const T=(jd-2451545.0)/36525.0;
-  const Om=(125.04452-1934.136261*T)*D2R;
-  const nut=-0.00478*Math.sin(Om);
-  const pos={};
-  pos["Sol"]=sunLongitude(T);
-  pos["Lua"]=moonLongitude(T);
-  const ea=helioXYZ("Terra",T);
-  for(const nome of ["Mercúrio","Vênus","Marte","Júpiter","Saturno","Urano","Netuno","Plutão"]){
-    const p=helioXYZ(nome,T);
-    pos[nome]=norm(Math.atan2(p[1]-ea[1],p[0]-ea[0])*R2D+nut);
-  }
-  pos["Nodo Norte"]=norm(125.0445479-1934.1362891*T+0.0020754*T*T);
-  return pos;
-}
-</script>
-<script>
-/* ===================== CASAS, SEITA, DIGNIDADES ===================== */
-function ascMc(jd,latDeg,lonEastDeg,epsDeg){
-  const gmst=norm(280.46061837+360.98564736629*(jd-2451545.0));
-  const ramc=norm(gmst+lonEastDeg);
-  const e=epsDeg*D2R, R=ramc*D2R, phi=latDeg*D2R;
-  const mc=norm(Math.atan2(Math.sin(R),Math.cos(R)*Math.cos(e))*R2D);
-  const asc=norm(Math.atan2(Math.cos(R),-(Math.sin(R)*Math.cos(e)+Math.tan(phi)*Math.sin(e)))*R2D);
-  return {ramc,mc,asc};
-}
-function lambdaFromRA(alphaDeg,epsDeg){
-  const a=alphaDeg*D2R,e=epsDeg*D2R;
-  return norm(Math.atan2(Math.sin(a),Math.cos(a)*Math.cos(e))*R2D);
-}
-function placidusCusps(ramc,latDeg,epsDeg){
-  const phi=latDeg*D2R, e=epsDeg*D2R;
-  function iter(baseOffset,kind){
-    let alpha=norm(ramc+baseOffset);
-    for(let i=0;i<20;i++){
-      const lam=lambdaFromRA(alpha,epsDeg)*D2R;
-      const dec=Math.asin(Math.sin(e)*Math.sin(lam));
-      const x=clamp(Math.tan(dec)*Math.tan(phi),-1,1);
-      const AD=Math.asin(x)*R2D;
-      if(kind==="c11")alpha=norm(ramc+(90+AD)/3);
-      if(kind==="c12")alpha=norm(ramc+2*(90+AD)/3);
-      if(kind==="c2") alpha=norm(ramc+180-2*(90-AD)/3);
-      if(kind==="c3") alpha=norm(ramc+180-(90-AD)/3);
-    }
-    return lambdaFromRA(alpha,epsDeg);
-  }
-  return {c11:iter(30,"c11"),c12:iter(60,"c12"),c2:iter(120,"c2"),c3:iter(150,"c3")};
-}
-function computeHouses(jd,lat,lon,eps,sistema){
-  const {ramc,mc,asc}=ascMc(jd,lat,lon,eps);
-  let cusps=new Array(13).fill(0), sys=sistema, aviso=null;
-  if(sistema==="placidus" && Math.abs(lat)>66){ sys="whole"; aviso="Latitude polar: Placidus indefinido — usando Signos Inteiros."; }
-  if(sys==="whole"){
-    const base=Math.floor(asc/30)*30;
-    for(let i=1;i<=12;i++)cusps[i]=norm(base+(i-1)*30);
-  }else{
-    const p=placidusCusps(ramc,lat,eps);
-    cusps[1]=asc; cusps[10]=mc; cusps[4]=norm(mc+180); cusps[7]=norm(asc+180);
-    cusps[11]=p.c11; cusps[12]=p.c12; cusps[2]=p.c2; cusps[3]=p.c3;
-    cusps[5]=norm(p.c11+180); cusps[6]=norm(p.c12+180); cusps[8]=norm(p.c2+180); cusps[9]=norm(p.c3+180);
-  }
-  return {ramc,mc,asc,cusps,sys,aviso};
-}
-function houseOf(lam,H){
-  if(H.sys==="whole"){
-    return ((Math.floor(lam/30)-Math.floor(H.asc/30))%12+12)%12+1;
-  }
-  for(let i=1;i<=12;i++){
-    const a=H.cusps[i], b=H.cusps[i===12?1:i+1];
-    const span=norm(b-a), off=norm(lam-a);
-    if(off<span)return i;
-  }
-  return 1;
-}
-function sunAltitude(jd,lat,lon,eps,sunLam){
-  const {ramc}=ascMc(jd,lat,lon,eps);
-  const l=sunLam*D2R,e=eps*D2R,phi=lat*D2R;
-  const alphaS=Math.atan2(Math.sin(l)*Math.cos(e),Math.cos(l));
-  const decS=Math.asin(Math.sin(e)*Math.sin(l));
-  const H=(ramc*D2R)-alphaS;
-  return Math.asin(Math.sin(phi)*Math.sin(decS)+Math.cos(phi)*Math.cos(decS)*Math.cos(H))*R2D;
-}
-/* Dignidades essenciais */
-const DOMIC={0:"Marte",1:"Vênus",2:"Mercúrio",3:"Lua",4:"Sol",5:"Mercúrio",6:"Vênus",7:"Marte",8:"Júpiter",9:"Saturno",10:"Saturno",11:"Júpiter"};
-const EXALT={0:"Sol",1:"Lua",3:"Júpiter",5:"Mercúrio",6:"Saturno",9:"Marte",11:"Vênus"};
-const TRIPL={fogo:{dia:"Sol",noite:"Júpiter"},terra:{dia:"Vênus",noite:"Lua"},ar:{dia:"Saturno",noite:"Mercúrio"},agua:{dia:"Vênus",noite:"Marte"}};
-const ELEM_SIGNO=["fogo","terra","ar","agua"];
-const MODO_SIGNO=["cardinal","fixo","mutável"];
-const TRAD7=["Sol","Lua","Mercúrio","Vênus","Marte","Júpiter","Saturno"];
-function dignidades(planeta,signoIdx,isDia){
-  if(!TRAD7.includes(planeta))return {lista:["—"],peregrino:false};
-  const lista=[]; const elem=ELEM_SIGNO[signoIdx%4];
-  if(DOMIC[signoIdx]===planeta)lista.push("domicílio");
-  if(EXALT[signoIdx]===planeta)lista.push("exaltação");
-  if(TRIPL[elem][isDia?"dia":"noite"]===planeta)lista.push("triplicidade");
-  if(DOMIC[(signoIdx+6)%12]===planeta)lista.push("detrimento");
-  if(EXALT[(signoIdx+6)%12]===planeta)lista.push("queda");
-  const peregrino=lista.length===0;
-  if(peregrino)lista.push("peregrino");
-  return {lista,peregrino};
-}
-/* ===================== ASPECTOS ===================== */
-const ASPDEF=[
-  {nome:"Conjunção",gl:"☌",ang:0,orb:8},
-  {nome:"Sextil",gl:"⚹",ang:60,orb:6},
-  {nome:"Quadratura",gl:"□",ang:90,orb:7},
-  {nome:"Trígono",gl:"△",ang:120,orb:7},
-  {nome:"Oposição",gl:"☍",ang:180,orb:8}
-];
-const ASPSENT={"Conjunção":"união e fusão das significações","Sextil":"concórdia amistosa e auxílio","Quadratura":"tensão, obstáculo e esforço","Trígono":"harmonia e facilidade natural","Oposição":"confronto, polaridade e balanço"};
-function calcAspectos(pos,spd,pontos){
-  const nomes=Object.keys(pos).filter(n=>!["ASC","MC","Nodo Norte","Parte da Fortuna"].includes(n));
-  const lista=[];
-  function testar(a,b,orbBonus){
-    const sep=Math.abs(fold180(pos[a]-pos[b]));
-    for(const A of ASPDEF){
-      let orb=A.orb+orbBonus;
-      if((a==="Sol"||a==="Lua"||b==="Sol"||b==="Lua")&&orbBonus===0)orb+=1;
-      const delta=Math.abs(sep-A.ang);
-      if(delta<=orb){
-        let aplic=null;
-        const sa=spd[a]!==undefined?spd[a]:0, sb=spd[b]!==undefined?spd[b]:0;
-        const sepFut=Math.abs(fold180((pos[a]+sa*0.5)-(pos[b]+sb*0.5)));
-        aplic=Math.abs(sepFut-A.ang)<delta;
-        lista.push({a,b,asp:A,orbe:delta,aplic});
-        return;
-      }
-    }
-  }
-  for(let i=0;i<nomes.length;i++)for(let j=i+1;j<nomes.length;j++)testar(nomes[i],nomes[j],0);
-  for(const n of nomes){ testar(n,"ASC",-3); testar(n,"MC",-3); }
-  lista.sort((x,y)=>x.orbe-y.orbe);
-  return lista;
-}
-/* ===================== ESTRELAS FIXAS (J2000 → precessão) ===================== */
-const ESTRELAS=[
- ["Algol",56.17,"Saturno/Júpiter",2],["Alcyone (Plêiades)",60.00,"Lua/Marte",1.5],
- ["Aldebaran",69.78,"Marte",2],["Rigel",76.83,"Júpiter/Marte",1.5],
- ["Capella",81.85,"Marte/Mercúrio",1.5],["Betelgeuse",88.75,"Marte/Mercúrio",1.5],
- ["Sirius",104.08,"Júpiter/Marte",2],["Canopus",104.97,"Saturno/Júpiter",1.5],
- ["Castor",110.23,"Mercúrio",1.5],["Pollux",113.22,"Marte",1.5],
- ["Procyon",115.78,"Mercúrio/Marte",1.5],["Alphard",147.28,"Saturno/Vênus",1.5],
- ["Regulus",149.83,"Marte/Júpiter",2],["Zosma",161.32,"Saturno/Vênus",1.5],
- ["Denebola",171.62,"Saturno/Vênus",1.5],["Vindemiatrix",189.95,"Saturno/Mercúrio",1.5],
- ["Algorab",193.45,"Marte/Saturno",1.5],["Spica",203.83,"Vênus/Marte",2],
- ["Arcturus",204.23,"Júpiter/Marte",1.5],["Alphecca",222.30,"Vênus/Mercúrio",1.5],
- ["Antares",249.77,"Marte/Júpiter",2],["Rasalhague",262.45,"Saturno/Vênus",1.5],
- ["Vega",285.32,"Vênus/Mercúrio",1.5],["Altair",301.78,"Marte/Júpiter",1.5],
- ["Deneb Algedi",323.55,"Saturno/Júpiter",1.5],["Fomalhaut",333.87,"Vênus/Mercúrio",2],
- ["Deneb (Cygni)",335.33,"Vênus/Mercúrio",1.5],["Achernar",345.32,"Júpiter",1.5],
- ["Markab",353.48,"Marte/Mercúrio",1.5],["Scheat",359.37,"Marte/Mercúrio",1.5]
-];
-function calcEstrelas(jd,pontos){
-  const anos=(jd-2451545.0)/365.25;
-  const prec=50.29/3600*anos;
-  const achados=[];
-  for(const [nome,lam2000,natureza,orb] of ESTRELAS){
-    const lam=norm(lam2000+prec);
-    for(const [pn,pl] of Object.entries(pontos)){
-      const d=Math.abs(fold180(pl-lam));
-      if(d<=orb)achados.push({estrela:nome,natureza,lam,ponto:pn,orbe:d});
-    }
-  }
-  achados.sort((a,b)=>a.orbe-b.orbe);
-  return achados;
-}
-/* ===================== FORMATAÇÃO ===================== */
-function fmtLon(lam){
-  lam=norm(lam);
-  const si=Math.floor(lam/30), g=lam-si*30;
-  const gi=Math.floor(g), mi=Math.round((g-gi)*60);
-  const gg=mi===60?gi+1:gi, mm=mi===60?0:mi;
-  return `${String(gg).padStart(2,"0")}°${String(mm).padStart(2,"0")}′ ${SIGNOS[si]}`;
-}
-function fmtLonCurto(lam){
-  lam=norm(lam);
-  const si=Math.floor(lam/30), g=lam-si*30;
-  return `${Math.floor(g)}°${String(Math.round((g-Math.floor(g))*60)).padStart(2,"0")}′ ${SGL[si]}`;
-}
-function signoDe(lam){return Math.floor(norm(lam)/30);}
-</script>
-<script>
-/* ===================== IMPORTAÇÃO DE LINK & FUSO ===================== */
-function parseLink(url){
-  const u=new URL(url.trim());
-  const q=u.searchParams;
-  const out={};
-  const d=q.get("date"); // 2002-04-22T09:40
-  if(d){
-    const m=d.match(/^(\d{4})-(\d{2})-(\d{2})[T\s](\d{1,2}):(\d{2})/);
-    if(m){ out.data=`${m[1]}-${m[2]}-${m[3]}`; out.hora=`${m[4].padStart(2,"0")}:${m[5]}`; }
-  }
-  if(q.get("lat"))out.lat=parseFloat(q.get("lat"));
-  const lon=q.get("long")||q.get("lon")||q.get("lng");
-  if(lon)out.lon=parseFloat(lon);
-  if(q.get("name"))out.nome=q.get("name");
-  if(q.get("n"))out.local=q.get("n");
-  if(q.get("t")||q.get("tz"))out.tz=q.get("t")||q.get("tz");
-  return out;
-}
-function tzOffsetMin(tz,y,mo,d,h,mi){
-  try{
-    const fmt=new Intl.DateTimeFormat("en-US",{timeZone:tz,timeZoneName:"longOffset"});
-    const read=(ms)=>{
-      const p=fmt.formatToParts(new Date(ms)).find(p=>p.type==="timeZoneName").value;
-      const m=p.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
-      return m?(m[1]==="-"?-1:1)*(parseInt(m[2],10)*60+(m[3]?parseInt(m[3],10):0)):0;
-    };
-    const guess=Date.UTC(y,mo-1,d,h,mi);
-    let off=read(guess);
-    off=read(guess-off*60000);
-    return off;
-  }catch(e){return null;}
-}
-function fmtOff(min){
-  const s=min<0?"-":"+", a=Math.abs(min);
-  return `${s}${String(Math.floor(a/60)).padStart(2,"0")}:${String(a%60).padStart(2,"0")}`;
-}
-function parseOff(str){
-  const m=(str||"").trim().match(/^([+-]?)(\d{1,2})(?::?(\d{2}))?$/);
-  if(!m)return null;
-  return (m[1]==="-"?-1:1)*(parseInt(m[2],10)*60+(m[3]?parseInt(m[3],10):0));
-}
-
-/* ===================== CÁLCULO DO MAPA ===================== */
-let CH=null; // estado do mapa corrente
-function calcularMapa(){
-  const err=document.getElementById("errbox"); err.style.display="none";
-  const nome=document.getElementById("f_nome").value||"Nativo";
-  const local=document.getElementById("f_local").value||"";
-  const data=document.getElementById("f_data").value;
-  const hora=document.getElementById("f_hora").value;
-  const lat=parseFloat(document.getElementById("f_lat").value);
-  const lon=parseFloat(document.getElementById("f_lon").value);
-  const tz=document.getElementById("f_tz").value.trim();
-  const sistema=document.getElementById("f_casas").value;
-  if(!data||!hora||isNaN(lat)||isNaN(lon)){ err.textContent="▓ Preencha data, hora, latitude e longitude (ou absorva um link)."; err.style.display="block"; return; }
-  const [y,mo,d]=data.split("-").map(Number);
-  const [h,mi]=hora.split(":").map(Number);
-  let off=parseOff(document.getElementById("f_off").value);
-  if(off===null){
-    off=tzOffsetMin(tz,y,mo,d,h,mi);
-    if(off===null){ err.textContent="▓ Fuso inválido. Informe o offset UTC manualmente (ex.: -03:00)."; err.style.display="block"; return; }
-    document.getElementById("f_off").value=fmtOff(off);
-  }
-  const ut=h+mi/60-off/60;
-  const jd=julianDay(y,mo,d,ut);
-  const T=(jd-2451545)/36525;
-  const eps=obliquity(T);
-  const pos=ephemeris(jd);
-  const pos2=ephemeris(jd+0.5);
-  const spd={}; for(const k in pos)spd[k]=fold180(pos2[k]-pos[k])/0.5;
-  const H=computeHouses(jd,lat,lon,eps,sistema);
-  const altSol=sunAltitude(jd,lat,lon,eps,pos["Sol"]);
-  const isDia=altSol>-0.833;
-  const fortuna=isDia? norm(H.asc+pos["Lua"]-pos["Sol"]) : norm(H.asc+pos["Sol"]-pos["Lua"]);
-  const todos={...pos,"ASC":H.asc,"MC":H.mc,"Parte da Fortuna":fortuna,"Nodo Sul":norm(pos["Nodo Norte"]+180)};
-  const aspectos=calcAspectos({...pos,"ASC":H.asc,"MC":H.mc},spd,null);
-  const pontosEstrela={...pos,"ASC":H.asc,"MC":H.mc};
-  const estrelas=calcEstrelas(jd,pontosEstrela);
-  CH={nome,local,data,hora,lat,lon,tz,off,ut,jd,eps,pos,spd,H,isDia,altSol,fortuna,todos,aspectos,estrelas,sistema:H.sys};
-  if(H.aviso){ err.textContent="▓ "+H.aviso; err.style.display="block"; }
-  renderTudo();
-  document.getElementById("resultado").classList.remove("hidden");
-  document.getElementById("statusline").textContent=`░▒▓ mapa calculado · ${nome} · ${data} ${hora} (${fmtOff(off)}) · jd ${jd.toFixed(4)} · ${CH.sistema==="whole"?"signos inteiros":"placidus"} ▓▒░`;
-  toast("MAPA ABSORVIDO");
-  document.getElementById("resultado").scrollIntoView({behavior:"smooth"});
-}
-
-/* ===================== RENDER: TABELAS ===================== */
-function renderTudo(){ renderMeta(); renderPos(); renderCusp(); renderSect(); renderAsp(); renderStars(); drawWheel(); gerarCards(); }
-function renderMeta(){
-  const c=CH;
-  document.getElementById("chartMeta").innerHTML=
-   `<b>Nativo</b><span>${esc(c.nome)}</span>`+
-   `<b>Local</b><span>${esc(c.local||"—")} · φ ${c.lat.toFixed(4)}° λ ${c.lon.toFixed(4)}°</span>`+
-   `<b>Data/Hora</b><span>${c.data.split("-").reverse().join("/")} ${c.hora} (UTC${fmtOff(c.off)}) · TU ${c.ut.toFixed(3)}h</span>`+
-   `<b>Sistema</b><span>${c.sistema==="whole"?"Signos Inteiros":"Placidus"} · seita ${c.isDia?"diurna ☉":"noturna ☽"}</span>`;
-}
-function planetasOrdem(){ return ["Sol","Lua","Mercúrio","Vênus","Marte","Júpiter","Saturno","Urano","Netuno","Plutão","Nodo Norte"]; }
-function renderPos(){
-  const c=CH;
-  let html="<tr><th></th><th>Planeta</th><th>Longitude</th><th>Casa</th><th>Dignidade</th><th>Veloc.</th></tr>";
-  for(const p of planetasOrdem()){
-    const lam=c.pos[p], casa=houseOf(lam,c.H);
-    const dg=dignidades(p,signoDe(lam),c.isDia);
-    const retro=c.spd[p]<0&&p!=="Nodo Norte";
-    html+=`<tr><td class="g">${PGL[p]||""}</td><td>${p}${retro?' <span class="rx">Rx</span>':""}</td><td>${fmtLon(lam)}</td><td>${casa}</td><td>${dg.lista.join(", ")}</td><td>${c.spd[p].toFixed(2)}°/d</td></tr>`;
-  }
-  for(const p of ["ASC","MC","Parte da Fortuna","Nodo Sul"]){
-    const lam=c.todos[p];
-    html+=`<tr><td class="g">${PGL[p]}</td><td>${p}</td><td>${fmtLon(lam)}</td><td>${p==="ASC"?1:(p==="MC"?houseOf(lam,c.H):houseOf(lam,c.H))}</td><td>—</td><td>—</td></tr>`;
-  }
-  document.getElementById("tblPos").innerHTML=html;
-}
-const CASA_TIT={1:"Vida e Corpo",2:"Bens e Sustento",3:"Irmãos e Caminhos Curtos",4:"Pai, Lar e Fundamentos",5:"Filhos e Prazeres",6:"Enfermidades e Serviço",7:"Matrimônio e Sociedades",8:"Morte e Bens Alheios",9:"Fé, Estudos e Longas Viagens",10:"Ofício e Honras",11:"Amigos e Esperanças",12:"Inimigos Ocultos e Reclusão"};
-function renderCusp(){
-  let html="<tr><th>Casa</th><th>Cúspide</th><th>Significado</th></tr>";
-  for(let i=1;i<=12;i++){
-    html+=`<tr><td>${["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"][i-1]}</td><td>${fmtLon(CH.H.cusps[i])}</td><td>${CASA_TIT[i]}</td></tr>`;
-  }
-  document.getElementById("tblCusp").innerHTML=html;
-}
-function renderSect(){
-  const c=CH;
-  const lum=c.isDia?"Sol":"Lua", ben=c.isDia?"Júpiter":"Vênus", mal=c.isDia?"Marte":"Saturno";
-  document.getElementById("tblSect").innerHTML=
-   `<tr><th>Condição</th><th>Valor</th></tr>`+
-   `<tr><td>Seita do mapa</td><td>${c.isDia?"Diurna (Sol acima do horizonte)":"Noturna (Sol abaixo do horizonte)"} · alt. ☉ ${c.altSol.toFixed(1)}°</td></tr>`+
-   `<tr><td>Luminar do tempo</td><td>${PGL[lum]} ${lum}</td></tr>`+
-   `<tr><td>Benéfico da seita</td><td>${PGL[ben]} ${ben} · Maléfico contrário: ${PGL[mal]} ${mal}</td></tr>`+
-   `<tr><td>⊗ Parte da Fortuna</td><td>${fmtLon(c.fortuna)} · casa ${houseOf(c.fortuna,c.H)}</td></tr>`;
-}
-function renderAsp(){
-  let html="<tr><th>Par</th><th>Aspecto</th><th>Orbe</th><th>Movimento</th></tr>";
-  for(const a of CH.aspectos){
-    html+=`<tr><td>${PGL[a.a]||a.a} ${a.a} — ${PGL[a.b]||a.b} ${a.b}</td><td>${a.asp.gl} ${a.asp.nome}</td><td>${a.orbe.toFixed(2)}°</td><td>${a.aplic===null?"—":(a.aplic?"aplicativo":"separativo")}</td></tr>`;
-  }
-  if(!CH.aspectos.length)html+="<tr><td colspan=4>Nenhum aspecto dentro dos orbes.</td></tr>";
-  document.getElementById("tblAsp").innerHTML=html;
-}
-function renderStars(){
-  let html="<tr><th>Estrela</th><th>Natureza</th><th>Longitude</th><th>Conjunta a</th><th>Orbe</th></tr>";
-  for(const s of CH.estrelas){
-    html+=`<tr><td>${s.estrela}</td><td>${s.natureza}</td><td>${fmtLon(s.lam)}</td><td>${PGL[s.ponto]||""} ${s.ponto}</td><td>${s.orbe.toFixed(2)}°</td></tr>`;
-  }
-  if(!CH.estrelas.length)html+="<tr><td colspan=5>Nenhuma conjunção estelar dentro dos orbes.</td></tr>";
-  document.getElementById("tblStars").innerHTML=html;
-}
-
-/* ===================== RODA (canvas pixelado) ===================== */
-function drawWheel(){
-  const cv=document.getElementById("wheel");
-  const S=760; cv.width=S; cv.height=S;
-  const L=380, cx=L/2, cy=L/2;
-  const off=document.createElement("canvas"); off.width=L; off.height=L;
-  const c=off.getContext("2d");
-  c.fillStyle="#000"; c.fillRect(0,0,L,L);
-  const asc=CH.H.asc;
-  const ang=lam=>(180+(norm(lam)-asc))*D2R;
-  const pt=(lam,r)=>[cx+r*Math.cos(ang(lam)), cy-r*Math.sin(ang(lam))];
-  const rZO=182,rZI=152,rHub=90,rPl=120;
-  c.strokeStyle="#fff"; c.lineWidth=1;
-  for(const r of [rZO,rZI,rHub]){ c.beginPath(); c.arc(cx,cy,r,0,7); c.stroke(); }
-  // divisões de signo + glifos
-  c.fillStyle="#fff"; c.font="14px monospace"; c.textAlign="center"; c.textBaseline="middle";
-  for(let i=0;i<12;i++){
-    const [x1,y1]=pt(i*30,rZI),[x2,y2]=pt(i*30,rZO);
-    c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.stroke();
-    const [gx,gy]=pt(i*30+15,(rZO+rZI)/2);
-    c.fillText(SGL[i],gx,gy+1);
-  }
-  // ticks de grau
-  c.strokeStyle="#777";
-  for(let g=0;g<360;g+=5){
-    const len=g%10===0?7:4;
-    const [x1,y1]=pt(g,rZI),[x2,y2]=pt(g,rZI-len);
-    c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.stroke();
-  }
-  // cúspides
-  for(let i=1;i<=12;i++){
-    const lam=CH.H.cusps[i];
-    const angular=(i===1||i===4||i===7||i===10);
-    c.strokeStyle=angular?"#fff":"#555"; c.lineWidth=angular?2:1;
-    const [x1,y1]=pt(lam,rHub),[x2,y2]=pt(lam,rZI);
-    c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.stroke();
-    const mid=norm(lam+ (norm(CH.H.cusps[i===12?1:i+1]-lam))/2);
-    const [nx,ny]=pt(mid,rHub-12);
-    c.fillStyle="#888"; c.font="10px monospace"; c.fillText(String(i),nx,ny);
-  }
-  c.lineWidth=1;
-  // setas AC/MC
-  c.fillStyle="#fff"; c.font="bold 11px monospace";
-  const [ax,ay]=pt(CH.H.asc,rZO+9); c.fillText("AC",clamp(ax,10,L-10),clamp(ay,8,L-8));
-  const [mx,my]=pt(CH.H.mc,rZO+9); c.fillText("MC",clamp(mx,10,L-10),clamp(my,8,L-8));
-  // aspectos no miolo
-  for(const a of CH.aspectos){
-    if(a.a==="ASC"||a.b==="ASC"||a.a==="MC"||a.b==="MC")continue;
-    if(a.asp.ang===0)continue;
-    const [x1,y1]=pt(CH.pos[a.a],rHub),[x2,y2]=pt(CH.pos[a.b],rHub);
-    const duro=(a.asp.ang===90||a.asp.ang===180);
-    c.strokeStyle=duro?"#fff":"#666";
-    c.setLineDash(duro?[]:[3,3]);
-    c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.stroke();
-  }
-  c.setLineDash([]);
-  // planetas (espalhar sobrepostos)
-  const lista=planetasOrdem().map(p=>({p,lam:CH.pos[p]})).sort((a,b)=>a.lam-b.lam);
-  const usados=[];
-  for(const o of lista){
-    let rr=rPl;
-    for(const u of usados){ if(Math.abs(fold180(o.lam-u.lam))<9 && Math.abs(rr-u.r)<14){ rr=u.r-16<rHub+8? u.r+16 : u.r-16; } }
-    usados.push({lam:o.lam,r:rr});
-    const [tx1,ty1]=pt(o.lam,rZI),[tx2,ty2]=pt(o.lam,rZI-10);
-    c.strokeStyle="#fff"; c.beginPath(); c.moveTo(tx1,ty1); c.lineTo(tx2,ty2); c.stroke();
-    const [px,py]=pt(o.lam,rr);
-    c.fillStyle="#fff"; c.font="15px monospace"; c.fillText(PGL[o.p],px,py);
-    c.fillStyle="#999"; c.font="8px monospace";
-    const g=Math.floor(norm(o.lam)%30);
-    c.fillText(String(g)+"°"+(CH.spd[o.p]<0&&o.p!=="Nodo Norte"?"r":""),px,py+11);
-  }
-  const ctx=cv.getContext("2d");
-  ctx.imageSmoothingEnabled=false;
-  ctx.clearRect(0,0,S,S);
-  ctx.drawImage(off,0,0,S,S);
-}
-
-/* ===================== CARDS DE INTERPRETAÇÃO ===================== */
-const SIG_PLAN={"Sol":"a vitalidade, o pai, o rei interior, as honras e a autoridade","Lua":"o corpo, a mãe, o povo, os hábitos e todo fluxo e mudança","Mercúrio":"o intelecto, a palavra, os cálculos, o comércio e os ofícios da mente","Vênus":"o prazer, a concórdia, o matrimônio, as artes e os adornos","Marte":"a coragem, a contenda, o ferro, o fogo e as ações cortantes","Júpiter":"a fortuna maior, a fé, a lei, os juízes e a abundância","Saturno":"o tempo, os limites, a disciplina, os anciãos e as coisas antigas"};
-const DESC_SIGNO=i=>`signo ${MODO_SIGNO[Math.floor(i/1)%3===0?0:0]||""}`;
-function descSigno(i){
-  const modo=MODO_SIGNO[i%3], elem=ELEM_SIGNO[i%4];
-  return `signo ${modo} de ${elem==="agua"?"água":elem}, domicílio de ${DOMIC[i]}`;
-}
-function fraseDignidade(p,i){
-  const dg=dignidades(p,i,CH.isDia);
-  const l=dg.lista;
-  if(l.includes("domicílio"))return "Está em seu próprio domicílio: forte, senhor de si, capaz de agir pelos próprios meios.";
-  if(l.includes("exaltação"))return "Está exaltado: recebido como hóspede ilustre, opera com honra e elevação, ainda que com certo excesso.";
-  if(l.includes("detrimento")&&l.includes("triplicidade"))return "Está em detrimento, mas sustentado pela própria triplicidade: age contrariado, porém não sem recursos.";
-  if(l.includes("detrimento"))return "Está em detrimento (exílio): age contrariado, em terra estranha às suas significações.";
-  if(l.includes("queda"))return "Está em queda: debilitado, suas significações pedem reparo e paciência.";
-  if(l.includes("triplicidade"))return "Está em sua própria triplicidade: dignidade mediana, age com apoio dos seus.";
-  return `Está peregrino, sem dignidade essencial: depende de seu dispositor, ${DOMIC[i]}, para levar a cabo suas significações.`;
-}
-function aspectosDe(p){
-  return CH.aspectos.filter(a=>(a.a===p||a.b===p)&&a.orbe<=6).slice(0,3)
-    .map(a=>{const outro=a.a===p?a.b:a.a; return `${a.asp.nome} com ${outro} (orbe ${a.orbe.toFixed(1)}°, ${a.aplic?"aplicativo":"separativo"}) — ${ASPSENT[a.asp.nome]}.`;});
-}
-function estrelasDe(p){
-  return CH.estrelas.filter(s=>s.ponto===p).map(s=>`Conjunto à estrela fixa ${s.estrela} (natureza ${s.natureza}, orbe ${s.orbe.toFixed(1)}°).`);
-}
-function cardPlaneta(p){
-  const lam=CH.pos[p], i=signoDe(lam), casa=houseOf(lam,CH.H);
-  const retro=CH.spd[p]<0;
-  let t=`${p} significa ${SIG_PLAN[p]}. Encontra-se a ${fmtLon(lam)} — ${descSigno(i)} — na casa ${casa} (${CASA_TIT[casa]}).\n`;
-  t+=fraseDignidade(p,i)+"\n";
-  if(retro)t+="Encontra-se retrógrado: revisões, atrasos e retornos nas matérias que significa.\n";
-  t+=`Aplicado à casa ${casa}, fala de ${CASA_TIT[casa].toLowerCase()}.`;
-  const asps=aspectosDe(p); if(asps.length)t+="\n"+asps.join("\n");
-  const est=estrelasDe(p); if(est.length)t+="\n"+est.join("\n");
-  return t;
-}
-function gerarCards(){
-  const cont=document.getElementById("cards");
-  cont.innerHTML="";
-  const c=CH;
-  const ascSigno=signoDe(c.H.asc), regente=DOMIC[ascSigno];
-  const rl=c.pos[regente], rCasa=houseOf(rl,c.H);
-  addCard("Ascendente & Regente",`AC ${fmtLon(c.H.asc)}`,
-   `O Ascendente ergue-se em ${SIGNOS[ascSigno]}, ${descSigno(ascSigno)}: eis a compleição, o temperamento e a via da vida.\n`+
-   `O regente do Ascendente, ${regente}, encontra-se a ${fmtLon(rl)}, na casa ${rCasa} (${CASA_TIT[rCasa]}): para lá se inclinam os passos do nativo. ${fraseDignidade(regente,signoDe(rl))}`);
-  addCard("Seita",c.isDia?"Mapa diurno ☉":"Mapa noturno ☽",
-   `Genitura ${c.isDia?"diurna: o Sol, acima do horizonte, é o luminar do tempo":"noturna: a Lua rege como luminar do tempo"}. `+
-   `O benéfico da seita é ${c.isDia?"Júpiter":"Vênus"}, mais pronto a favorecer; o maléfico contrário à seita é ${c.isDia?"Marte":"Saturno"}, cujos danos pedem maior vigilância.`);
-  for(const p of TRAD7)addCard(`${PGL[p]} ${p}`,fmtLon(c.pos[p]),cardPlaneta(p));
-  const fc=houseOf(c.fortuna,c.H);
-  addCard("⊗ Parte da Fortuna",fmtLon(c.fortuna),
-   `A Parte da Fortuna, sorte do corpo e dos bens segundo a fortuna, cai em ${SIGNOS[signoDe(c.fortuna)]}, casa ${fc} (${CASA_TIT[fc]}). Seu dispositor é ${DOMIC[signoDe(c.fortuna)]}, a quem cabe administrar essa sorte.`);
-  const nn=c.pos["Nodo Norte"], nc=houseOf(nn,c.H);
-  addCard("☊ Nodos",`${fmtLonCurto(nn)} / ${fmtLonCurto(norm(nn+180))}`,
-   `O Nodo Norte (Cabeça do Dragão), que aumenta e acumula, está em ${SIGNOS[signoDe(nn)]}, casa ${nc}; o Nodo Sul (Cauda), que dispersa e subtrai, no eixo oposto, casa ${houseOf(norm(nn+180),c.H)}.`);
-  addCard("Síntese do Astrólogo","juízo final","Escreva aqui o seu juízo: combine dignidades, seita, aspectos e estrelas para o delineamento final da genitura…");
-}
-function addCard(titulo,tag,texto){
-  const d=document.createElement("div");
-  d.className="card";
-  d.innerHTML=`<span class="del" title="remover">×</span><h3></h3><div class="tag"></div><div class="txt" contenteditable="true" spellcheck="false"></div>`;
-  d.querySelector("h3").textContent=titulo;
-  d.querySelector(".tag").textContent=tag;
-  d.querySelector(".txt").textContent=texto;
-  d.querySelector(".del").onclick=()=>d.remove();
-  document.getElementById("cards").appendChild(d);
-}
-
-/* ===================== EXPORTAÇÃO ===================== */
-function coletarCards(){
-  return [...document.querySelectorAll("#cards .card")].map(c=>({
-    t:c.querySelector("h3").textContent, tag:c.querySelector(".tag").textContent, x:c.querySelector(".txt").innerText
-  }));
-}
-function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-function tabelasHTML(){
-  const c=CH;
-  let pos="<table><tr><th>Planeta</th><th>Longitude</th><th>Casa</th><th>Dignidade</th><th>Movimento</th></tr>";
-  for(const p of planetasOrdem()){
-    const lam=c.pos[p];
-    pos+=`<tr><td>${PGL[p]} ${p}</td><td>${fmtLon(lam)}</td><td>${houseOf(lam,c.H)}</td><td>${dignidades(p,signoDe(lam),c.isDia).lista.join(", ")}</td><td>${c.spd[p]<0&&p!=="Nodo Norte"?"retrógrado":"direto"}</td></tr>`;
-  }
-  pos+=`<tr><td>AC Ascendente</td><td>${fmtLon(c.H.asc)}</td><td>1</td><td>—</td><td>—</td></tr>`;
-  pos+=`<tr><td>MC Meio-Céu</td><td>${fmtLon(c.H.mc)}</td><td>${houseOf(c.H.mc,c.H)}</td><td>—</td><td>—</td></tr>`;
-  pos+=`<tr><td>⊗ Parte da Fortuna</td><td>${fmtLon(c.fortuna)}</td><td>${houseOf(c.fortuna,c.H)}</td><td>—</td><td>—</td></tr></table>`;
-  let cus="<table><tr><th>Casa</th><th>Cúspide</th><th>Significado</th></tr>";
-  for(let i=1;i<=12;i++)cus+=`<tr><td>${i}</td><td>${fmtLon(c.H.cusps[i])}</td><td>${CASA_TIT[i]}</td></tr>`;
-  cus+="</table>";
-  let asp="<table><tr><th>Par</th><th>Aspecto</th><th>Orbe</th><th>Movimento</th></tr>";
-  for(const a of c.aspectos)asp+=`<tr><td>${a.a} — ${a.b}</td><td>${a.asp.nome}</td><td>${a.orbe.toFixed(2)}°</td><td>${a.aplic?"aplicativo":"separativo"}</td></tr>`;
-  asp+="</table>";
-  let est="<table><tr><th>Estrela</th><th>Natureza</th><th>Longitude</th><th>Conjunta a</th><th>Orbe</th></tr>";
-  if(c.estrelas.length)for(const s of c.estrelas)est+=`<tr><td>${s.estrela}</td><td>${s.natureza}</td><td>${fmtLon(s.lam)}</td><td>${s.ponto}</td><td>${s.orbe.toFixed(2)}°</td></tr>`;
-  else est+="<tr><td colspan=5>Nenhuma conjunção estelar dentro dos orbes.</td></tr>";
-  est+="</table>";
-  return {pos,cus,asp,est};
-}
-function exportarPDF(){
-  if(!CH)return toast("CALCULE UM MAPA PRIMEIRO");
-  const c=CH,t=tabelasHTML(),cards=coletarCards();
-  const hoje=new Date().toLocaleDateString("pt-BR");
-  let h=`<div class="capa"><p class="inst noind">OFFICINA ASTROLOGICA</p><h1>Análise de Mapa Natal: ${esc(c.nome)}</h1><p class="noind" style="text-align:center">${esc(c.local||"")}</p><p class="noind" style="text-align:center">${c.data.split("-").reverse().join("/")}, ${c.hora} (UTC${fmtOff(c.off)}) — φ ${c.lat.toFixed(4)}°, λ ${c.lon.toFixed(4)}°</p><p class="noind" style="text-align:center">${hoje}</p></div>`;
-  h+=`<h2>1 Identificação da Genitura</h2><p>Genitura de ${esc(c.nome)}, nascido(a) em ${c.data.split("-").reverse().join("/")} às ${c.hora} (hora local, UTC${fmtOff(c.off)}), em ${esc(c.local||"local não informado")} (latitude ${c.lat.toFixed(4)}°, longitude ${c.lon.toFixed(4)}°). Mapa de seita ${c.isDia?"diurna":"noturna"}, calculado no sistema de casas ${c.sistema==="whole"?"por Signos Inteiros":"Placidus"} para o Dia Juliano ${c.jd.toFixed(5)}.</p>`;
-  h+=`<h2>2 Posições Planetárias</h2>${t.pos}<p class="fonte noind">Fonte: elaborado pelo autor (${hoje}).</p>`;
-  h+=`<h2>3 Cúspides das Casas</h2>${t.cus}<p class="fonte noind">Fonte: elaborado pelo autor (${hoje}).</p>`;
-  h+=`<h2>4 Aspectos</h2>${t.asp}<p class="fonte noind">Fonte: elaborado pelo autor (${hoje}).</p>`;
-  h+=`<h2>5 Estrelas Fixas</h2>${t.est}<p class="fonte noind">Fonte: elaborado pelo autor (${hoje}).</p>`;
-  h+=`<h2 class="pbreak">6 Interpretação</h2>`;
-  cards.forEach((cd,i)=>{ h+=`<h3>6.${i+1} ${esc(cd.t)} — ${esc(cd.tag)}</h3>`+cd.x.split(/\n+/).map(p=>`<p>${esc(p)}</p>`).join(""); });
-  h+=`<h2>7 Notas Metodológicas</h2><p>Posições calculadas por efeméride analítica embutida (Sol e Lua por séries de Meeus; planetas por elementos keplerianos médios, JPL/Standish 1800–2050), com precisão típica de minutos de arco. Dignidades essenciais, seita e orbes conforme a doutrina tradicional. Longitudes de estrelas fixas precessadas de J2000 para a época natal.</p>`;
-  document.getElementById("printReport").innerHTML=h;
-  window.print();
-}
-function exportarHTML(){
-  if(!CH)return toast("CALCULE UM MAPA PRIMEIRO");
-  const c=CH,t=tabelasHTML(),cards=coletarCards();
-  const wheelPNG=document.getElementById("wheel").toDataURL("image/png");
-  const cardsHtml=cards.map(cd=>`<section class="cardx"><h3>${esc(cd.t)} <small>${esc(cd.tag)}</small></h3>${cd.x.split(/\n+/).map(p=>`<p>${esc(p)}</p>`).join("")}</section>`).join("");
-  const doc=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mapa Natal — ${esc(c.nome)}</title><style>
-body{margin:0;background:#000;color:#e8e8e8;font-family:"Courier New",monospace;font-size:15px;line-height:1.65}
-.w{max-width:860px;margin:0 auto;padding:24px 18px}
-h1{letter-spacing:.35em;text-transform:uppercase;text-align:center;font-size:22px}
-.sub{text-align:center;color:#8f8f8f;letter-spacing:.2em;text-transform:uppercase;font-size:11px;margin-bottom:26px}
-h2{letter-spacing:.25em;text-transform:uppercase;font-size:14px;border-bottom:1px dashed #555;padding-bottom:6px;margin-top:38px}
-img.roda{width:100%;max-width:640px;display:block;margin:0 auto;image-rendering:pixelated}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{border:1px solid #333;padding:5px 8px;text-align:left}
-th{background:#101010;text-transform:uppercase;font-size:11px;letter-spacing:.12em}
-tr:nth-child(even) td{background:#070707}
-.cardx{border:1px dashed #777;padding:14px 16px;margin:14px 0;background:#040404}
-.cardx h3{margin:0 0 8px;letter-spacing:.15em;text-transform:uppercase;font-size:13px;border-bottom:1px solid #333;padding-bottom:6px}
-.cardx small{color:#8f8f8f;float:right;font-weight:normal}
-.cardx p{margin:0 0 8px;text-align:justify}
-.meta{border:1px solid #fff;padding:12px 14px;font-size:13px}
-footer{color:#666;text-align:center;font-size:11px;letter-spacing:.15em;margin-top:40px;text-transform:uppercase}
-@media(max-width:600px){body{font-size:14px}.w{padding:16px 10px}table{font-size:11px}}
-</style></head><body><div class="w">
-<div style="color:#4a4a4a;font-size:11px;letter-spacing:2px;overflow:hidden;white-space:nowrap">░░▒▒▓▓██▓▓▒▒░░░▒▒▓▓██▓▓▒▒░░░▒▒▓▓██▓▓▒▒░░░▒▒▓▓██▓▓▒▒░░░▒▒▓▓██▓▓▒▒░░</div>
-<h1>Mapa Natal</h1><div class="sub">${esc(c.nome)} · officina astrologica</div>
-<div class="meta">NATIVO: ${esc(c.nome)}<br>LOCAL: ${esc(c.local||"—")} · φ ${c.lat.toFixed(4)}° λ ${c.lon.toFixed(4)}°<br>DATA: ${c.data.split("-").reverse().join("/")} ${c.hora} (UTC${fmtOff(c.off)})<br>SISTEMA: ${c.sistema==="whole"?"Signos Inteiros":"Placidus"} · SEITA ${c.isDia?"DIURNA":"NOTURNA"}</div>
-<h2>Roda</h2><img class="roda" src="${wheelPNG}" alt="Roda do mapa natal">
-<h2>Posições</h2>${t.pos}
-<h2>Casas</h2>${t.cus}
-<h2>Aspectos</h2>${t.asp}
-<h2>Estrelas Fixas</h2>${t.est}
-<h2>Interpretação</h2>${cardsHtml}
-<footer>gerado pela officina astrologica · efeméride analítica embutida · precisão típica de minutos de arco</footer>
-</div></body></html>`;
-  const blob=new Blob([doc],{type:"text/html;charset=utf-8"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download=`mapa-natal-${(c.nome||"nativo").toLowerCase().replace(/[^a-z0-9]+/g,"-")}.html`;
-  a.click(); URL.revokeObjectURL(a.href);
-  toast("HTML EXPORTADO");
-}
-function toast(msg){
-  const t=document.getElementById("toast");
-  t.textContent="▓ "+msg+" ▓"; t.style.display="block";
-  clearTimeout(t._x); t._x=setTimeout(()=>t.style.display="none",2200);
-}
-
-/* ===================== EVENTOS ===================== */
-document.getElementById("btnParse").onclick=()=>{
-  const err=document.getElementById("errbox"); err.style.display="none";
-  try{
-    const o=parseLink(document.getElementById("urlin").value);
-    if(o.nome)document.getElementById("f_nome").value=o.nome;
-    if(o.local)document.getElementById("f_local").value=o.local;
-    if(o.data)document.getElementById("f_data").value=o.data;
-    if(o.hora)document.getElementById("f_hora").value=o.hora;
-    if(o.lat!==undefined)document.getElementById("f_lat").value=o.lat;
-    if(o.lon!==undefined)document.getElementById("f_lon").value=o.lon;
-    if(o.tz)document.getElementById("f_tz").value=o.tz;
-    document.getElementById("f_off").value="";
-    calcularMapa();
-  }catch(e){
-    err.textContent="▓ Link inválido — verifique a URL. ("+e.message+")"; err.style.display="block";
-  }
-};
-document.getElementById("btnCalc").onclick=calcularMapa;
-document.getElementById("f_casas").onchange=()=>{ if(CH)calcularMapa(); };
-document.getElementById("btnPdf").onclick=exportarPDF;
-document.getElementById("btnHtml").onclick=exportarHTML;
-document.getElementById("btnAddCard").onclick=()=>addCard("Novo Card","anotação","Escreva aqui…");
-document.getElementById("urlin").addEventListener("keydown",e=>{ if(e.key==="Enter")document.getElementById("btnParse").click(); });
-</script>
+<script src="./assets/genitura.js"></script>
 </body>
 </html>
